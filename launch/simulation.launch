@@ -1,0 +1,3 @@
+<launch>
+	<node name="simulation" pkg="airsim_gym" type="simulation.py"/>
+</launch>
