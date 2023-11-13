@@ -1,3 +1,5 @@
 <launch>
-	<node name="simulation" pkg="airsim_gym" type="simulation.py"/>
+	<include file="$(find depth_image_proc)/launch/point_cloud_xyzrgb.launch"/>
+	
+	<node name="simulation" pkg="dmcurl_nbv" type="simulation.py"/>
 </launch>

@@ -1,0 +1,3 @@
+[submodule "src/depth_image_proc"]
+	path = src/depth_image_proc
+	url = git@github.com:mgmateus/depth_image_proc.git

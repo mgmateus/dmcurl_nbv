@@ -4,17 +4,17 @@ from std_msgs.msg import String
 
 from airsim_ros_pkgs.msg import Image, VelCmd
 
-from utils import image_transport
+from simulation_resources.utils import image_transport
 
 class Uav:
     
 
     def __init__(self, vehicle_name : str) -> None:
         rospy.Subscriber("/airsim_node/"+vehicle_name+"/Stereo_Cam/Scene", \
-                         Image, self.__callback_rgb)
+                         Image, self._callback_rgb)
         
         rospy.Subscriber("/airsim_node/"+vehicle_name+"/Stereo_Cam/DepthPerspective", \
-                         Image, self.__callback_depth)
+                         Image, self._callback_depth)
         
         self.__vel_pub = rospy.Publisher("/airsim_node/"+vehicle_name+"/vel_cmd_world_frame", VelCmd, queue_size=1)
     
@@ -39,11 +39,11 @@ class Uav:
         return callback
     
     @callback_image
-    def __callback_rgb(self, data):
+    def _callback_rgb(self, data):
         return data, "rgb"
     
     @callback_image
-    def __callback_depth(self, data):
+    def _callback_depth(self, data):
         return data, "depth"
     
     def __str__(self) -> str:

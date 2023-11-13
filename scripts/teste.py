@@ -19,16 +19,8 @@ if __name__ == "__main__":
     t = T()
     print(t.g("oi"))
     print(t.a)
-
-- simulation:
+    
+- rtabmap:
       layout: tiled
       panes:
-        - sleep 10; roslaunch rtabmap_ros rtabmap.launch \
-                    subscribe_rgbd:=true \
-                    compressed:=true \
-                    rtabmap_args:="--delete_db_on_start" \
-                    rgbd_sync:=true \
-                    approx_rgbd_sync:=true \
-                    rgb_topic:=/airsim_node/Hydrone/Stereo_Cam/Scene \
-                    camera_info_topic:=/airsim_node/Hydrone/Stereo_Cam/Scene/camera_info \
-                    rtabmapviz:=false
+        - sleep 10; roslaunch rtabmap_launch rtabmap.launch rtabmap_args:="--delete_db_on_start" rgb_topic:=/airsim_node/Hydrone/Stereo_Cam/Scene depth_topic:=/airsim_node/Hydrone/Stereo_Cam/DepthPerspective camera_info_topic:=/airsim_node/Hydrone/Stereo_Cam/Scene/camera_info odom_topic:=/airsim_node/Hydrone/odom_local_ned imu_topic:=/airsim_node/Hydrone/imu/Imu visual_odometry:=false frame_id:=Stereo_Cam_optical approx_sync:=false rgbd_sync:=true queue_size:=1000

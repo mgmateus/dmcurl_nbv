@@ -3,6 +3,7 @@
 import rospy
 import os
 import random
+import time
 
 import numpy as np
 
@@ -10,7 +11,7 @@ from airsim import MultirotorClient
 from airsim.types import Pose
 from airsim.utils import to_quaternion, to_eularian_angles
 
-from scripts.utils import angular_distance
+from simulation_resources.utils import angular_distance
 
 from std_msgs.msg import String
         
@@ -28,7 +29,7 @@ class _Resources:
                 -For set ip address from docker network, use a ip from ping result's between containers on host
                 -For set ip address from WSL, os.environ['WSL_HOST_IP'] on host.
         """        
-        client = MultirotorClient(os.environ['UE4_IP'])
+        client = ""#MultirotorClient(os.environ['UE4_IP'])
         
         @classmethod            
         def restart(cls) -> None:
@@ -189,14 +190,43 @@ class Spawn(_Resources):
         eularian_orientation = (0, 0, yaw)
 
         self.set_vehicle_pose(vehicle_name, position, eularian_orientation)
+        
+import open3d as o3d
 
-        
+def visualize(mesh):
+    o3d.visualization.draw_geometries([mesh])
+    
 if __name__ == "__main__":
+    rospy.init_node("simulation", anonymous=False)
     
-    s = Spawn()
-    s.set_air_random_circular_pose("Hydrone", "eolic", 50.0, 10.0)
+    #s = Spawn()
         
+    # List of returned meshes are received via this function
+    #meshes=s.ue4.client.simGetMeshPositionVertexBuffers()
+    #rospy.logwarn(f"{meshes}")
     
+    #index=0
+    #for m in meshes:
+    #    rospy.logwarn(f"{m.name}")
+        # Finds one of the cube meshes in the Blocks environment
+    #    if 'auv' in m.name:
+
+            # Code from here on relies on libigl. Libigl uses pybind11 to wrap C++ code. So here the built pyigl.so
+            # library is in the same directory as this example code.
+            # This is here as code for your own mesh library should require something similar
+    mesh_path = "/home/airsim/AirSim/ros/src/dmcurl_nvb/mesh/plataform.PLY"
+    mesh = o3d.io.read_triangle_mesh(mesh_path)
+
+    mesh.compute_vertex_normals()
+    draw_geoms_list = [mesh]
     
-        
-        
+    pcd = mesh.sample_points_poisson_disk(number_of_points=200000, init_factor=5)
+    
+    map_to_tensors = {}
+    map_to_tensors["positions"] = pcd.positions
+    map_to_tensors["normals"] = pcd.normals
+    map_to_tensors["labels"] = pcd.labels
+    
+    tensor_pcd = o3d.t.geometry.PointCloud(map_to_tensors)
+    #o3d.t.io.write_point_cloud("platform.pcd", pcd)
+            
