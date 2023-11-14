@@ -192,6 +192,7 @@ class Spawn(_Resources):
         self.set_vehicle_pose(vehicle_name, position, eularian_orientation)
         
 import open3d as o3d
+import open3d.core as o3c
 
 def visualize(mesh):
     o3d.visualization.draw_geometries([mesh])
@@ -214,19 +215,19 @@ if __name__ == "__main__":
             # Code from here on relies on libigl. Libigl uses pybind11 to wrap C++ code. So here the built pyigl.so
             # library is in the same directory as this example code.
             # This is here as code for your own mesh library should require something similar
-    mesh_path = "/home/airsim/AirSim/ros/src/dmcurl_nvb/mesh/plataform.PLY"
+            
+    '''
+    mesh_path = "/home/airsim/AirSim/ros/src/dmcurl_nbv/mesh/plataform.PLY"
     mesh = o3d.io.read_triangle_mesh(mesh_path)
 
     mesh.compute_vertex_normals()
     draw_geoms_list = [mesh]
     
     pcd = mesh.sample_points_poisson_disk(number_of_points=200000, init_factor=5)
+    o3d.io.write_point_cloud("/home/airsim/AirSim/ros/src/dmcurl_nbv/point_clouds/platform.pcd", pcd)
+    '''        
+    pcl_path ="/home/airsim/AirSim/ros/src/dmcurl_nbv/point_clouds/platform.pcd"
+    pcl = o3d.io.read_point_cloud(pcl_path)
+    o3d.visualization.draw_geometries([pcl])
     
-    map_to_tensors = {}
-    map_to_tensors["positions"] = pcd.positions
-    map_to_tensors["normals"] = pcd.normals
-    map_to_tensors["labels"] = pcd.labels
     
-    tensor_pcd = o3d.t.geometry.PointCloud(map_to_tensors)
-    #o3d.t.io.write_point_cloud("platform.pcd", pcd)
-            

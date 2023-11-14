@@ -6,7 +6,8 @@ from catkin_pkg.python_setup import generate_distutils_setup
 # fetch values from package.xml
 setup_args = generate_distutils_setup(
     packages=[
-            "airsim"
+            "airsim",
+            "open3d_point_clooud"
             ],
     package_dir={"": "src/modules"})
 
