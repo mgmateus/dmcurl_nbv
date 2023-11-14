@@ -7,7 +7,11 @@ windows:
       panes:
         - roslaunch airsim_ros_pkgs airsim_node.launch output:=screen host:=$UE4_IP
 
-  
+  - rtabmap:
+      layout: tiled
+      panes:
+        - sleep 10; roslaunch rtabmap_launch rtabmap.launch rtabmap_args:="--delete_db_on_start" rgb_topic:=/airsim_node/Hydrone/Stereo_Cam/Scene depth_topic:=/airsim_node/Hydrone/Stereo_Cam/DepthPlanar camera_info_topic:=/airsim_node/Hydrone/Stereo_Cam/Scene/camera_info odom_topic:=/airsim_node/Hydrone/odom_local_ned imu_topic:=/airsim_node/Hydrone/imu/Imu visual_odometry:=false frame_id:=Stereo_Cam_optical approx_sync:=false rgbd_sync:=true queue_size:=1000 rtabmap_viz:=false rviz:=true
+
   - simu:
       layout: tiled
       panes:

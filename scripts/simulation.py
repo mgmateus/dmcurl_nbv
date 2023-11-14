@@ -29,7 +29,7 @@ class _Resources:
                 -For set ip address from docker network, use a ip from ping result's between containers on host
                 -For set ip address from WSL, os.environ['WSL_HOST_IP'] on host.
         """        
-        client = ""#MultirotorClient(os.environ['UE4_IP'])
+        client = MultirotorClient(os.environ['UE4_IP'])
         
         @classmethod            
         def restart(cls) -> None:
@@ -191,43 +191,17 @@ class Spawn(_Resources):
 
         self.set_vehicle_pose(vehicle_name, position, eularian_orientation)
         
-import open3d as o3d
-import open3d.core as o3c
 
-def visualize(mesh):
-    o3d.visualization.draw_geometries([mesh])
-    
 if __name__ == "__main__":
     rospy.init_node("simulation", anonymous=False)
     
-    #s = Spawn()
+    
+    s = Spawn()
+    time.sleep(30)
+    for i in range(8):
+        time.sleep(3)
+        s.set_air_random_circular_pose("Hydrone", "eolic", 40, 10)
         
-    # List of returned meshes are received via this function
-    #meshes=s.ue4.client.simGetMeshPositionVertexBuffers()
-    #rospy.logwarn(f"{meshes}")
-    
-    #index=0
-    #for m in meshes:
-    #    rospy.logwarn(f"{m.name}")
-        # Finds one of the cube meshes in the Blocks environment
-    #    if 'auv' in m.name:
-
-            # Code from here on relies on libigl. Libigl uses pybind11 to wrap C++ code. So here the built pyigl.so
-            # library is in the same directory as this example code.
-            # This is here as code for your own mesh library should require something similar
-            
-    '''
-    mesh_path = "/home/airsim/AirSim/ros/src/dmcurl_nbv/mesh/plataform.PLY"
-    mesh = o3d.io.read_triangle_mesh(mesh_path)
-
-    mesh.compute_vertex_normals()
-    draw_geoms_list = [mesh]
-    
-    pcd = mesh.sample_points_poisson_disk(number_of_points=200000, init_factor=5)
-    o3d.io.write_point_cloud("/home/airsim/AirSim/ros/src/dmcurl_nbv/point_clouds/platform.pcd", pcd)
-    '''        
-    pcl_path ="/home/airsim/AirSim/ros/src/dmcurl_nbv/point_clouds/platform.pcd"
-    pcl = o3d.io.read_point_cloud(pcl_path)
-    o3d.visualization.draw_geometries([pcl])
+   
     
     

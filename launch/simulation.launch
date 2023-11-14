@@ -1,5 +1,5 @@
 <launch>
-	<include file="$(find depth_image_proc)/launch/point_cloud_xyzrgb.launch"/>
+	<include file="$(find depth_image_proc)/launch/point_cloud_xyz_radial.launch"/>
 	
 	<node name="simulation" pkg="dmcurl_nbv" type="simulation.py"/>
 </launch>
